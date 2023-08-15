@@ -1,20 +1,24 @@
 import { useCustomDispatch, useCustomSelector } from 'hook/redux';
 import React from 'react';
-import { increment } from 'store/auth/authSlice';
+import { type DataLogin, startLogin } from 'store/auth/thunk';
 
 export const Home: React.FC = () => {
-  const { value } = useCustomSelector((state) => state.auth);
-  const disatch = useCustomDispatch();
+  const { token, isLoading } = useCustomSelector((state) => state.auth);
+  const dispatch = useCustomDispatch();
 
-  const handlePlus = (): void => {
-    disatch(increment(value + 1));
+  const handleLogin = async (): Promise<void> => {
+    const newData: DataLogin = {
+      email: 'eve.holt@reqres.in',
+      password: 'cityslicka'
+    };
+    await dispatch(startLogin(newData));
   };
 
   return (
     <>
       <div>
-        <h1>{value}</h1>
-        <button onClick={handlePlus}>+</button>
+        <h2>{!isLoading ? token : 'Loading.....'}</h2>
+        <button onClick={handleLogin}>Login</button>
       </div>
     </>
   );

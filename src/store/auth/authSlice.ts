@@ -1,19 +1,25 @@
 import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+// se usa PayloadAction para tipar el tipo de dato que debera traer el payload
+
 export interface PropsAuth {
-  value: number;
+  token: string | null;
+  isLoading: boolean;
 }
 
-const initialState: PropsAuth = { value: 0 };
+const initialState: PropsAuth = { token: null, isLoading: false };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    increment: (state, action: PayloadAction<number>) => {
-      state.value = action.payload;
+    onLogin: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
+    },
+    onIsloading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     }
   }
 });
 
-export const { increment } = authSlice.actions;
+export const { onLogin, onIsloading } = authSlice.actions;
