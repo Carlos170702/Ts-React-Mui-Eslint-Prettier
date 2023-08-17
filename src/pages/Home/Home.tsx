@@ -1,9 +1,12 @@
-import { useCustomDispatch, useCustomSelector } from 'hook/redux';
 import React from 'react';
+import { useCustomDispatch, useCustomSelector } from 'hook/redux';
 import { type DataLogin, startLogin } from 'store/auth/thunk';
+import { AppBar, Button, Switch, Typography, styled } from '@mui/material';
+import { onChangeMode } from 'store/settings/SettingsSlice';
 
 export const Home: React.FC = () => {
   const { token, isLoading } = useCustomSelector((state) => state.auth);
+  const { themeMode } = useCustomSelector((state) => state.settings);
   const dispatch = useCustomDispatch();
 
   const handleLogin = async (): Promise<void> => {
@@ -14,11 +17,33 @@ export const Home: React.FC = () => {
     await dispatch(startLogin(newData));
   };
 
+  const handleChangeMode = (): void => {
+    const activeMode = themeMode === 'dark' ? 'light' : 'dark';
+
+    dispatch(onChangeMode(activeMode));
+  };
+
+  const AppBarStyled = styled(AppBar)(({ theme }) => ({
+    display: 'flex',
+    color: theme.palette.primary.dark,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    position: 'sticky'
+  }));
+
   return (
     <>
       <div>
-        <h2>{!isLoading ? token : 'Loading.....'}</h2>
-        <button onClick={handleLogin}>Login</button>
+        <AppBarStyled>
+          <Typography variant="h6">Carlos daniel</Typography>
+          <Switch onChange={handleChangeMode} />
+        </AppBarStyled>
+        <Typography variant="h1">
+          {!isLoading ? token : 'Loading.....'}
+        </Typography>
+        <Button onClick={handleLogin} variant="contained">
+          Login
+        </Button>
       </div>
     </>
   );

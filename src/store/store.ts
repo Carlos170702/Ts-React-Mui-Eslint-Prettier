@@ -6,6 +6,7 @@ import {
 import { authSlice } from './auth/authSlice';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { settingSlice } from './settings/SettingsSlice';
 
 /* 
 configuracion de cuando guardara los datos a localstorage 
@@ -17,6 +18,12 @@ const persistAuthConfig = {
   key: 'auth',
   storage,
   whitelist: ['token']
+};
+
+const persistSettingsConfig = {
+  key: 'settings',
+  storage,
+  whitelist: ['themeMode']
 };
 
 export const store = configureStore({
@@ -31,6 +38,10 @@ export const store = configureStore({
     auth: persistReducer<ReturnType<typeof authSlice.reducer>>(
       persistAuthConfig,
       authSlice.reducer
+    ),
+    settings: persistReducer<ReturnType<typeof settingSlice.reducer>>(
+      persistSettingsConfig,
+      settingSlice.reducer
     )
   },
   middleware: (defaultMiddleware) =>
@@ -46,7 +57,7 @@ export const persistent = persistStore(store);
 // useSelector a lo mismo que el useDispatch esto aparece en la documentacion de redux
 export type TypeSelector = ReturnType<typeof store.getState>;
 export type TypeDispatch = typeof store.dispatch;
-// este es para tipar una accion
+// este es para tipar la accion
 export type TypeThunk = ThunkAction<
   Promise<unknown>,
   TypeSelector,

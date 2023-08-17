@@ -3,16 +3,17 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { persistent, store } from 'store/store';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import Themeprovider from 'theme/ThemeProvider';
 
 const App: React.FC = () => {
   return (
-    <div>
-      <Provider store={store}>
-        <PersistGate persistor={persistent}>
+    <Provider store={store}>
+      <PersistGate persistor={persistent}>
+        <Themeprovider>
           <Home />
-        </PersistGate>
-      </Provider>
-    </div>
+        </Themeprovider>
+      </PersistGate>
+    </Provider>
   );
 };
 
